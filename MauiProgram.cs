@@ -2,8 +2,8 @@
 using MudBlazor.Services;
 using NobUS.DataContract.Model.Entity;
 using NobUS.DataContract.Reader.OfficialAPI;
-using NobUS.Frontend.MAUI_Blazor.Façade;
-using NobUS.Frontend.MAUI_Blazor.Repository;
+using NobUS.Infrastructure.Façade;
+using NobUS.Infrastructure.Repository;
 
 namespace NobUS.Frontend.MAUI_Blazor
 {
