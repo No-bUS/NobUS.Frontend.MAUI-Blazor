@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using MudBlazor.Services;
 using NobUS.Frontend.MAUI_Blazor.Data;
 
 namespace NobUS.Frontend.MAUI_Blazor
@@ -16,9 +17,10 @@ namespace NobUS.Frontend.MAUI_Blazor
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddMudServices();
 
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
 
