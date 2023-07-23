@@ -50,8 +50,14 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Autofac" Version="7.0.1" />
+        <PackageReference Include="Autofac.Extras.CommonServiceLocator" Version="6.1.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
         <PackageReference Include="MudBlazor" Version="6.7.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NobUS.DataContract.Reader.OfficialAPI\NobUS.DataContract.Reader.OfficialAPI.csproj" />
     </ItemGroup>
 
 </Project>

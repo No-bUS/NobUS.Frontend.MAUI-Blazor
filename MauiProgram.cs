@@ -1,6 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
+using NobUS.DataContract.Model.Entity;
+using NobUS.DataContract.Reader.OfficialAPI;
 using NobUS.Frontend.MAUI_Blazor.Data;
+using NobUS.Frontend.MAUI_Blazor.Façade;
+using NobUS.Frontend.MAUI_Blazor.Repository;
 
 namespace NobUS.Frontend.MAUI_Blazor
 {
@@ -25,6 +29,10 @@ namespace NobUS.Frontend.MAUI_Blazor
 #endif
 
             builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services.AddSingleton<IClient, CongestedClient>();
+            builder.Services.AddSingleton<IFaçade, DummyFaçade>();
+            builder.Services.AddSingleton<IRepository<Station>, StaticRepository<Station>>();
+            builder.Services.AddSingleton<IRepository<Route>, StaticRepository<Route>>();
 
             return builder.Build();
         }

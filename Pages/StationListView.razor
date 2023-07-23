@@ -1,0 +1,24 @@
+﻿@page "/StationListView"
+@using NobUS.DataContract.Model.Entity
+@using NobUS.Frontend.MAUI_Blazor.Façade
+@using NobUS.Frontend.MAUI_Blazor.Repository
+
+@inject IRepository<Station> StationRepository
+@inject IFaçade Façade
+
+<MudList Clickable="true">
+    @foreach (var station in _stations)
+    {
+        <StationView Station="@station" />
+    }
+</MudList>
+
+@code {
+    private IEnumerable<Station> _stations = Array.Empty<Station>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _stations = await StationRepository.GetAll();
+    }
+
+}

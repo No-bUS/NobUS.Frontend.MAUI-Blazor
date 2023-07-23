@@ -1,0 +1,63 @@
+﻿@using NobUS.DataContract.Model.Entity
+@using NobUS.DataContract.Model.ValueObject.Snapshot
+@using NobUS.Frontend.MAUI_Blazor.Façade
+@inject IFaçade Façade
+
+<MudListItem>
+    <MudCard Class="mr-n4">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.overline" Color="Color.Secondary">@Station.Name</MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Refresh" OnClick="OnInitializedAsync" />
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Expand" OnClick="@(() => ShowEtaList = !ShowEtaList)" />
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText Typo="Typo.h6" Color="Color.Primary">
+                <b>@Station.Caption</b>
+            </MudText>
+            @if (ShowEtaList && CongestedRoutes.Any())
+            {
+                <MudList>
+                    @foreach (var cr in CongestedRoutes)
+                    {
+                        <MudListItem>
+                            <MudStack Row="true" Justify="Justify.FlexStart" AlignItems="AlignItems.Center">
+                                <MudChip Variant="Variant.Filled">
+                                    <MudText>@cr.RouteName</MudText>
+                                </MudChip>
+                                @foreach (var ae in cr.ArrivalEvents)
+                                {
+                                    <MudPaper><MudText Typo="Typo.body1" Align="Align.Center">@FormatTimeSpan(ae.EstimatedArrivalSpan)</MudText></MudPaper>
+                                }
+                            </MudStack>
+                        </MudListItem>
+                    }
+                </MudList>
+            }
+        </MudCardContent>
+    </MudCard>
+</MudListItem>
+
+@code {
+    [Parameter]
+    public Station Station { get; set; }
+
+    [Parameter]
+    public bool ShowEtaList { get; set; }
+
+    private record CongestedRoute(string RouteName, IEnumerable<ArrivalEvent> ArrivalEvents);
+
+    private IEnumerable<CongestedRoute> CongestedRoutes { get; set; } = Array.Empty<CongestedRoute>();
+
+    static string FormatTimeSpan(TimeSpan ts) => $"{(ts.Hours > 0 ? ts.Hours + "h " : "")}{(ts.Minutes > 0 ? ts.Minutes + "m " : "")}{ts.Seconds}s";
+
+    protected override async Task OnInitializedAsync()
+    {
+        CongestedRoutes = (await Façade.GetAsync<ArrivalEvent, Station>(Station))
+            .GroupBy(ae => ae.ShuttleJob.Route)
+            .Select(g => new CongestedRoute(g.Key.Name, g)).ToList();
+    }
+}
